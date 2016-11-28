@@ -8,5 +8,8 @@
   },
   "author": "Simon Liedl <Simon.Liedl@pixida.de>",
   "license": "ISC",
-  "private" : true
+  "private": true,
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
