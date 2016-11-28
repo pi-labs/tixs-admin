@@ -1,199 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>TIxS Config</title>
+<div class="row">
+  <div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+      <li>Group</li>
+      <li ng-repeat="group in groups" class="active"><a ng-click="setGroup(group)" href="">{{group.name}}<span class="sr-only">(current)</span></a></li>
+    </ul>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
+    <ul class="nav nav-sidebar">
+      <input type="text" class="form-control" id="name" />
+      <li><a href="#">Add Group</a></li>
+    </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
+  <div ng-if="configname!=''">
+    <h1>Config: {{configname}}</h1>
 
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
-  </head>
-
-  <body>
-
-    <nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
-      <button type="button" class="navbar-toggler hidden-sm-up" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation"></button>
-      <a class="navbar-brand" href="#">TIxS Config</a>
-      <div id="navbar">
-        <nav class="nav navbar-nav float-xs-left">
-          <a class="nav-item nav-link" href="index.html">Dashboard</a>
-          <a class="nav-item nav-link" href="#">Remote Config</a>
-          <a class="nav-item nav-link" href="#">Software Update</a>
-        </nav>
-        <form class="float-xs-right">
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li>Group</li>
-            <li class="active"><a href="#">Default <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Development</a></li>
-            <li><a href="#">Test-Drivers</a></li>
-          </ul>
-
-          <ul class="nav nav-sidebar">
-            <li><a href="#">Add Group</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
-          <h1>Remote Config</h1>
-
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Data Transmission</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#profile" role="tab">E-Call / B-Call</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#messages" role="tab">GPS</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Sleep / Wakeup</a>
-            </li>
-          </ul>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" show-tab href="#home" role="tab">Data Transmission</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" show-tab href="#profile" role="tab">E-Call / B-Call</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" show-tab href="#messages" role="tab">GPS</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" show-tab href="#settings" role="tab">Sleep / Wakeup</a>
+      </li>
+    </ul>
 
 
 
-          <form>
-          <div class="tab-content">
+    <form>
+    <div class="tab-content">
 
-          <div class="tab-pane active" id="home" role="tabpanel">
-          <div class="form-group">
-          <label for="disabledSelect">Update Interval</label>
-          <select id="disabledSelect" class="form-control">
-            <option>10 Seconds</option>
-            <option>30 Seconds</option>
-            <option>1 Minute</option>
-          </select>
-          </div>
-          <h2>Acceleration Data</h2>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">
-              Transmit Acceleration Data
-            </label>
-          </div>
-          
+    <div class="tab-pane active" id="home" role="tabpanel">
+    <div class="form-group">
+    <label for="disabledSelect">Update Interval</label>
+    <select id="disabledSelect" class="form-control">
+      <option>10 Seconds</option>
+      <option>30 Seconds</option>
+      <option>1 Minute</option>
+    </select>
+    </div>
+    <h2>Acceleration Data</h2>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" ng-model="config.enableTransmitAcceleration">
+        Transmit Acceleration Data
+      </label>
+    </div>
+    
 
-          <div class="form-group">
-            <label for="exampleInputEmail1">Acceleration Transmission Threshold</label>
-            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="20%">
-            <small id="emailHelp" class="form-text text-muted">Acceleration values will be sent, if the new values is 20% above or below the value sent last.</small>
-          </div>
-          <h2>Position Data</h2>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">
-              Transmit Position Data
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label for="exampleInputEmail1">Position Filter: Max. Error of Transmitted GPS Values (meters)</label>
-            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Max. Error in Meters">
-            <small id="emailHelp" class="form-text text-muted">Lower values will lead to higher data traffic.</small>
-          </div>
-
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">
-              Use Delta Position Message
-            </label>
-          </div>
-          </div>
-
-          <div class="tab-pane" id="profile" role="tabpanel">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">
-              Enable B-Call function
-            </label>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">
-              Enable E-Call function
-            </label>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Primary SMS Destination Number</label>
-            <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="+49...">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Secondary SMS Destination Number</label>
-            <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="+49...">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">E-Call ASI Threshold</label>
-            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="0.2">
-          </div>
-          </div>
-
-          <div class="tab-pane" id="messages" role="tabpanel">
-          <div class="form-group">
-          <label for="disabledSelect">Download Assisted GPS Data</label>
-          <select id="disabledSelect" class="form-control">
-            <option>Always</option>
-            <option>Never</option>
-          </select>
-          </div>
-          </div>
-
-
-          <div class="tab-pane" id="settings" role="tabpanel">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">
-              Enable Inactivity Sleep Function
-            </label>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Inactivity Max g</label>
-            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="0.02">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Inactivity Timeout (Seconds)</label>
-            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="60 Seconds">
-          </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Save &amp; Publish</button>
-
-          </div>
-
-
-          </form>
-
-
-        </div>
-      </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Acceleration Transmission Threshold</label>
+      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="20%">
+      <small id="emailHelp" class="form-text text-muted">Acceleration values will be sent, if the new values is 20% above or below the value sent last.</small>
+    </div>
+    <h2>Position Data</h2>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" ng-model="config.enableTransmitGPS">
+        Transmit Position Data
+      </label>
     </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
-    <script src="../dist/js/bootstrap.min.js"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <script src="../assets/js/vendor/holder.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Position Filter: Max. Error of Transmitted GPS Values (meters)</label>
+      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Max. Error in Meters" ng-model="config.gpsFilterMinAccuracyM">
+      <small id="emailHelp" class="form-text text-muted">Lower values will lead to higher data traffic.</small>
+    </div>
+
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" ng-model="config.enableTransmitUpdatePosition">
+        Use Delta Position Message
+      </label>
+    </div>
+    </div>
+
+    <div class="tab-pane" id="profile" role="tabpanel">
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" value="">
+        Enable B-Call function
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" value="">
+        Enable E-Call function
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Primary SMS Destination Number</label>
+      <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="+49...">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Secondary SMS Destination Number</label>
+      <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="+49...">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">E-Call ASI Threshold</label>
+      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="0.2">
+    </div>
+    </div>
+
+    <div class="tab-pane" id="messages" role="tabpanel">
+    <div class="form-group">
+    <label for="disabledSelect">Download Assisted GPS Data</label>
+    <select id="disabledSelect" class="form-control">
+      <option>Always</option>
+      <option>Never</option>
+    </select>
+    </div>
+    </div>
+
+
+    <div class="tab-pane" id="settings" role="tabpanel">
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" ng-model="config.enableInactivityDetection">
+        Enable Inactivity Sleep Function
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Inactivity Max g</label>
+      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="0.02">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Inactivity Timeout (Seconds)</label>
+      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="60 Seconds">
+    </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" ng-click="putConfig()">Save &amp; Publish</button>
+
+    </div>
+
+
+    </form>
+    </div>
+
+  </div>
+</div>

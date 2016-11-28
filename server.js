@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var express    = require('express');        // call express
 var app        = express();  
+var bodyParser = require('body-parser');
 
 var builder = ProtoBuf.loadProtoFile("tixs.proto");
 var tixsMessages = builder.build();
@@ -13,9 +14,28 @@ var tixsMessages = builder.build();
 var port = process.env.PORT || 8080;        // set our port
 
 mongoose.connect('mongodb://localhost/tixs', { config: { autoIndex: false } });
+mongoose.Promise = require('bluebird');
+//assert.equal(query.exec().constructor, require('bluebird'));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 var Device = require('./app/models/device');
+var Group = require('./app/models/group');
+
+// SETUP DB
+Group.findOne({'name': 'Default'}, function( err, group )
+{
+  if( group === null )
+  {
+    console.log("Creating default Groups");
+    new Group({name: 'Default'}).save();
+    new Group({name: 'Development'}).save();
+  }
+});
+
+
 
 client.on('connect', function () {
     console.log("Connected to Broker");
@@ -54,6 +74,51 @@ router.route('/devices')
             res.json(devices);
     });
   });
+router.route('/groups')
+  .get(function(req, res) {
+        Group.find(function(err, groups) {
+            if (err)
+                res.send(err);
+            res.json(groups);
+    });
+  });
+
+  router.route('/groups/:group_id')
+    .put(function(req, res) {
+        Group.findById(req.params.group_id, function(err, group) {
+            if (err)
+                res.send(err);
+            
+            group.config = req.body;  // update the groups info
+            console.log(group);
+            // save the group
+            group.save(function(err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'group updated!' });
+            });
+
+        });
+    });
+
+  router.route('/group/software/:group_id')
+    .put(function(req, res) {
+        Group.findById(req.params.group_id, function(err, group) {
+            if (err)
+                res.send(err);
+            
+            group.software = req.body;  // update the groups info
+            console.log(group);
+            // save the group
+            group.save(function(err) {
+                if (err)
+                    res.send(err);
+                res.json({ message: 'group updated!' });
+            });
+
+        });
+    });
 
 
 // more routes for our API will happen here
@@ -62,10 +127,14 @@ router.route('/devices')
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 app.use(express.static('public'));
+app.use('/config', express.static('public/index.html') );
+app.use('/software', express.static('public/index.html') );
 app.use('/css', express.static('node_modules/bootstrap/dist/css'));
 app.use('/js', express.static('node_modules/jquery/dist'));
 app.use('/js', express.static('node_modules/bootstrap/dist/js'));
 app.use('/js', express.static('node_modules/tether/dist/js'));
+app.use('/js', express.static('node_modules/angular'));
+app.use('/js', express.static('node_modules/angular-route'));
 
 
 

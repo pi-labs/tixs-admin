@@ -1,0 +1,36 @@
+<div class="row">
+<div class="col-sm-3 col-md-2 sidebar">
+  <ul class="nav nav-sidebar">
+    <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+    <li><a href="#">Reports</a></li>
+    <li><a href="#">Export</a></li>
+  </ul>
+</div>
+<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
+  <h1>Dashboard</h1>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>IMEI</th>
+          <th>Last Online</th>
+          <th>Software Version</th>
+          <th>Hardware Version</th>
+          <th>Group</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="device in devices">
+          <td>{{device.imei}}</td>
+          <td>{{device.date | date:'medium'}}</td>
+          <td>{{device.longVersion}}</td>
+          <td>{{device.hwVersion}}</td>
+          <td>Default</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
