@@ -46,12 +46,6 @@ client.on('message', function (topic, message) {
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
-});
-
-
 router.route('/devices')
   .get(function(req, res) {
         Device.find(function(err, devices) {
@@ -67,6 +61,13 @@ router.route('/devices')
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+app.use(express.static('public'));
+app.use('/css', express.static('node_modules/bootstrap/dist/css'));
+app.use('/js', express.static('node_modules/jquery/dist'));
+app.use('/js', express.static('node_modules/bootstrap/dist/js'));
+app.use('/js', express.static('node_modules/tether/dist/js'));
+
+
 
 // START THE SERVER
 // =============================================================================
