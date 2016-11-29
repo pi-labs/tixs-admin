@@ -9,7 +9,16 @@ var GroupSchema = new Schema({
         gpsFilterMinAccuracyM: {type: Number, default: 3 },
         enableTransmitUpdatePosition: {type: Boolean, default: true},
         enableTransmitGPS: {type: Boolean, default: true},
-        enableInactivityDetection: {type: Boolean, default: true}
+        enableInactivityDetection: {type: Boolean, default: true},
+        ecallBcallSmsNumber: String,
+        secondaryEcallBcallSmsNumber: String,
+        accSendThresholdPercent: Number,
+        enableBCall: {type: Boolean, default: true},
+        enableECall: {type: Boolean, default: true},
+        inactivitySleepTimeoutSec: Number,
+        inactivityDetectionThreshold: Number,
+        agpsConfig: Number,
+        stateUpdatePeriod: Number
     },
     software: {
         expected_version: {type: 'String', default: ''},

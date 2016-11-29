@@ -8,6 +8,21 @@ body {
 }
 
 
+.navbar-dark .navbar-nav .nav-link {
+    color: #5BC2EC;
+}
+
+a {
+    color: #5BC2EC;
+    text-decoration: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #5BC2EC;
+    border-color: #5BC2EC;
+}
+
 /*
  * Global add-ons
  */
@@ -63,7 +78,7 @@ body {
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
   color: #fff;
-  background-color: #428bca;
+  background-color: #5BC2EC;
 }
 
 h3:not(:first-child) {

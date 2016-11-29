@@ -18,12 +18,10 @@ app.controller('remoteConfigCtrl', function($scope, $http) {
         $scope.configname = group.name;
         $scope.config = group.config;
         $scope._id = group._id;
-        console.log(group);
     };
     $scope.putConfig = function(){
         $http.put("/api/groups/"+$scope._id, $scope.config);
         toastr.success('Saved');
-        console.log($scope.config);
     };
   $http.get("/api/groups")
   .then(function(response) {
@@ -38,12 +36,10 @@ app.controller('softwareConfigCtrl', function($scope, $http) {
         $scope.configname = group.name;
         $scope.software = group.software;
         $scope._id = group._id;
-        console.log(group);
     };
     $scope.putSoftware = function(){
         $http.put("/api/group/software/"+$scope._id, $scope.software);
         toastr.success('Saved');
-        console.log($scope.software);
     };
   $http.get("/api/groups")
   .then(function(response) {
@@ -79,4 +75,60 @@ app.directive('showTab', function () {
             });
         }
     };
+});
+
+app.directive('bsHasError', [function() {
+  return {
+      restrict: "A",
+      link: function(scope, element, attrs, ctrl) {
+          var input = element.find('input[ng-model]'); 
+          if (input.length) {
+              scope.$watch(function() {
+                  return input.hasClass('ng-invalid');
+              }, function(isInvalid) {
+                  input.toggleClass('has-danger', isInvalid);
+                  //console.log(input.hasClass('has-error'));
+              });
+
+          }
+      }
+  };
+}]);
+
+app.directive('showValidation', [function() {
+    return {
+        restrict: "A",
+        link: function(scope, element, attrs, ctrl) {
+
+            element.find('.form-group').each(function(i, formGroup) {
+                    showValidation(angular.element(formGroup));
+                });
+
+            function showValidation(formGroupEl) {
+                var input = formGroupEl.find('input[ng-model],textarea[ng-model]');
+                if (input.length > 0) {
+                    scope.$watch(function() {
+                        return input.hasClass('ng-invalid');
+                    }, function(isInvalid) {
+
+                        formGroupEl.toggleClass('has-danger', isInvalid);
+                    });
+                }
+            }
+        }
+    };
+}]);
+
+app.directive('convertToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(val) {
+        return parseInt(val, 10);
+      });
+      ngModel.$formatters.push(function(val) {
+        return '' + val;
+      });
+    }
+  };
 });

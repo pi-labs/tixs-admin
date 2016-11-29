@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var builder = ProtoBuf.loadProtoFile("tixs.proto");
 var tixsMessages = builder.build();
 
+var excel = require('./app/excel.js');
 
 var port = process.env.PORT || 8080;        // set our port
 
@@ -120,6 +121,17 @@ router.route('/groups')
 
         });
     });
+  router.route('/excel')
+    .get(function(req, res){
+        Device.find(function(err, devices) {
+            if (err)
+                res.send(err);
+              res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+              res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+              res.send(excel(devices));
+        
+    });
+  });
 
 
 // more routes for our API will happen here

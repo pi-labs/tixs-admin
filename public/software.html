@@ -3,7 +3,7 @@
   <div class="col-sm-3 col-md-2 sidebar">
     <ul class="nav nav-sidebar">
       <li>Group</li>
-      <li ng-repeat="group in groups" class="active"><a ng-click="setGroup(group)" href="">{{group.name}}<span class="sr-only">(current)</span></a></li>
+      <li ng-repeat="group in groups" ng-class="configname==group.name?'active':''"><a ng-click="setGroup(group)" href="">{{group.name}}<span class="sr-only">(current)</span></a></li>
     </ul>
 
     <ul class="nav nav-sidebar">
