@@ -115,6 +115,7 @@ router.route('/groups')
                 if (err)
                     res.send(err);
                 res.json({ message: 'group updated!' });
+
             });
 
         });
@@ -130,11 +131,14 @@ app.use(express.static('public'));
 app.use('/config', express.static('public/index.html') );
 app.use('/software', express.static('public/index.html') );
 app.use('/css', express.static('node_modules/bootstrap/dist/css'));
+app.use('/css', express.static('node_modules/toastr/build'));
 app.use('/js', express.static('node_modules/jquery/dist'));
 app.use('/js', express.static('node_modules/bootstrap/dist/js'));
 app.use('/js', express.static('node_modules/tether/dist/js'));
 app.use('/js', express.static('node_modules/angular'));
 app.use('/js', express.static('node_modules/angular-route'));
+app.use('/js', express.static('node_modules/toastr/build'));
+
 
 
 

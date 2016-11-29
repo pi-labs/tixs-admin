@@ -22,6 +22,7 @@ app.controller('remoteConfigCtrl', function($scope, $http) {
     };
     $scope.putConfig = function(){
         $http.put("/api/groups/"+$scope._id, $scope.config);
+        toastr.success('Saved');
         console.log($scope.config);
     };
   $http.get("/api/groups")
@@ -41,6 +42,7 @@ app.controller('softwareConfigCtrl', function($scope, $http) {
     };
     $scope.putSoftware = function(){
         $http.put("/api/group/software/"+$scope._id, $scope.software);
+        toastr.success('Saved');
         console.log($scope.software);
     };
   $http.get("/api/groups")
