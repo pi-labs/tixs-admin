@@ -20,9 +20,14 @@
     "node-excel-export": "^1.2.0",
     "npm": "^4.0.2",
     "protobufjs": "^5.0.1",
-    "toastr": "^2.1.2"
+    "toastr": "^2.1.2",
+    "jquery":"latest",
+    "bootstrap":"latest",
+    "tether":"latest",
+    "async":"latest"
   },
   "devDependencies": {
-    "webpack": "^2.1.0-beta.27"
+    "webpack": "^2.1.0-beta.27",
+    "http-server": "^0.6.1"
   }
 }

@@ -1,63 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <head>
+        <base href="/">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
 
-    <title>TIxS Config</title>
+        <title>TIxS Config</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
-    <link href="./css/toastr.css" rel="stylesheet"/>
-  </head>
+        <!-- Custom styles for this template -->
+        <link href="dashboard.css" rel="stylesheet">
+        <link href="./css/toastr.css" rel="stylesheet"/>
+    </head>
 
-  <body>
+    <body>
+        <div class="row">
+            <div class="col-md-3">
+                <nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
+                    <div>
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">TIxS</a>
 
-    <nav class="navbar navbar-dark navbar-fixed-top bg-inverse">
-      <button type="button" class="navbar-toggler hidden-sm-up" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation"></button>
+                            <!--<button type="button" class="navbar-toggler hidden-sm-up" data-toggle="collapse" data-target="#navbar" aria-expanded="false" 
+                                    aria-controls="navbar" aria-label="Toggle navigation"></button>-->
 
-      <img  class="navbar-brand"  class="nav-item nav-link"  src="logo@2x.png" style="height:30px" />
-      <div id="navbar">
+                        </div>
 
-        <nav class="nav navbar-nav float-xs-left">
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a class="nav-item nav-link" href="/"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Dashboard</a></li>
+                                <li><a class="nav-item nav-link" href="config"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Configurations</a></li>
+                                <li><a class="nav-item nav-link" href="software"><span class="glyphicon glyphicon-open" aria-hidden="true"></span> Software Update</a></li>
 
-          <a class="nav-item nav-link" href="/">Dashboard</a>
-          <a class="nav-item nav-link" href="/config">Remote Config</a>
-          <a class="nav-item nav-link" href="/software">Software Update</a>
-        </nav>
-        <form class="float-xs-right">
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
-      </div>
-    </nav>
+                            </ul>
+                        </div>
 
-    
+                    </div>
 
+                </nav>
 
-    <div class="container-fluid" ng-app="myApp" ng-controller="MainController">
-      <div ng-view></div>
-      
-    </div>
+            </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/tether.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
-    <script src="./js/angular.min.js"></script>
-    <script src="./js/angular-route.js"></script>
-    <script src="./browser-app.js"></script>
-    <script src="./js/toastr.min.js"></script>
-  </body>
+            <div class="col-md-9">
+                <div ng-app="myApp" ng-controller="MainController">
+                    <div ng-view></div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/tether.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/angular.min.js"></script>
+        <script src="./js/angular-route.js"></script>
+        <script src="./browser-app.js"></script>
+        <script src="./js/toastr.min.js"></script>
+    </body>
 </html>

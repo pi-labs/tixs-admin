@@ -1,36 +1,63 @@
 <div class="row">
-<div class="col-sm-3 col-md-2 sidebar">
-  <ul class="nav nav-sidebar">
-    <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-    <li><a target="_self" href="/api/excel">Reports</a></li>
-    <li><a target="_self" href="/api/excel">Export</a></li>
-  </ul>
-</div>
-<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
-  <h1>Dashboard</h1>
+    <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+            <li class="active"><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Overview </a></li>
+            <li><a target="_self" href="/api/excel" title="Download report"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Excel export</i></a></li>
+        </ul>
+    </div>
 
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>IMEI</th>
-          <th>Last Online</th>
-          <th>Software Version</th>
-          <th>Hardware Version</th>
-          <th>Group</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="device in devices">
-          <td>{{device.imei}}</td>
-          <td>{{device.date | date:'medium'}}</td>
-          <td>{{device.longVersion}}</td>
-          <td>{{device.hwVersion}}</td>
-          <td>Default</td>
-        </tr>
-        
-      </tbody>
-    </table>
-  </div>
-</div>
+
+
+
+    <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
+
+        <div class="row">
+            <div class="col-md-6">
+            <h1>Dashboard</h1>
+
+            </div>
+            <div class="col-md-6">
+                <div class="dropdown" >
+                    <button ng-disabled="disableActionDropdown" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Assign groups 
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="group in groups">
+                            <a ng-click="assignDevicesToGroup(group)" href="#">{{group.name}}</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>IMEI</th>
+                            <th>Last Startup</th>
+                            <th>Reported SW Version</th>
+                            <th>Reported HW Version</th>
+                            <th>Config group</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="device in devices"                        >                        
+                            <td><input type="checkbox" ng-click="rowClicked(device)" ></td>
+                            <td>{{device.imei}}</td>
+                            <td>{{device.date| date:'dd.MM.yyyy HH:mm'}}</td>
+                            <td>{{device.longVersion}}</td>
+                            <td>{{device.hwVersion}}</td>
+                            <td>{{device.group}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

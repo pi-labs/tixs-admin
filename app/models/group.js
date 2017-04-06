@@ -3,7 +3,8 @@ var Schema       = mongoose.Schema;
 
 
 var GroupSchema = new Schema({
-    name: String,
+    name: { type: String, unique : true, required : true },
+    version: {type: Number, default: 0},
     config: {
         enableTransmitAcceleration: {type: Boolean, default: true},
         gpsFilterMinAccuracyM: {type: Number, default: 3 },
