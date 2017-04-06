@@ -1,0 +1,159 @@
+
+<div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+            <li>Group</li>
+            <li ng-repeat="group in groups"  ng-class="configname == group.name ? 'active' : ''">
+
+
+
+                <a ng-click="setGroup(group)" href="">
+                    <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> {{group.name}}
+                </a>
+            </li>
+        </ul>
+
+        <ul class="nav nav-sidebar">
+            <!--<input type="text" class="form-control" id="name" />-->
+            <li><a href="#"><input placeholder="New group" type="text" ng-model="newGroupName" /> <button type="button" ng-click="newGroup()" class="btn btn-default" aria-label="Add group">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 main">
+        <div ng-if="configname != ''">
+            <h1>Config: {{configname}}</h1>
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" show-tab href="#home" role="tab">Data Transmission</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" show-tab href="#profile" role="tab">E-Call / B-Call</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" show-tab href="#messages" role="tab">GPS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" show-tab href="#settings" role="tab">Sleep / Wakeup</a>
+                </li>
+            </ul>
+
+
+
+            <form show-validation>
+                <div class="tab-content" show-validation>
+
+                    <div class="tab-pane active" id="home" role="tabpanel">
+                        <div class="form-group">
+                            <label for="disabledSelect">Update Interval</label>
+                            <select id="disabledSelect" class="form-control" ng-model="config.stateUpdatePeriod" convert-to-number>
+                                <option value="10">10 Seconds</option>
+                                <option value="30">30 Seconds</option>
+                                <option value="60">1 Minute</option>
+                            </select>
+                        </div>
+                        <h2>Acceleration Data</h2>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" ng-model="config.enableTransmitAcceleration">
+                                Transmit Acceleration Data
+                            </label>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Acceleration Transmission Threshold</label>
+                            <input type="number" class="form-control" ng-model="config.accSendThresholdPercent" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="20%">
+                            <small id="emailHelp" class="form-text text-muted">Acceleration values will be sent, if the new values is {{config.accSendThresholdPercent}}% above or below the value sent last.</small>
+                        </div>
+                        <h2>Position Data</h2>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" ng-model="config.enableTransmitGPS">
+                                Transmit Position Data
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Position Filter: Max. Error of Transmitted GPS Values (meters)</label>
+                            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Max. Error in Meters" ng-model="config.gpsFilterMinAccuracyM">
+                            <small id="emailHelp" class="form-text text-muted">Lower values will lead to higher data traffic.</small>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" ng-model="config.enableTransmitUpdatePosition">
+                                Use Delta Position Message
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="profile" role="tabpanel">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" ng-model="config.enableBCall" />
+                                Enable B-Call function
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" ng-model="config.enableECall" />
+                                Enable E-Call function
+                            </label>
+                        </div>
+                        <div class="form-group" show-errors>
+                            <label for="exampleInputEmail1">Primary SMS Destination Number</label>
+                            <input type="tel" class="form-control form-control-danger" id="primarySms" ng-model="config.ecallBcallSmsNumber" aria-describedby="emailHelp" ng-pattern="/^[+]?[0-9]+$/" placeholder="+49...">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Secondary SMS Destination Number</label>
+                            <input type="tel" class="form-control  form-control-danger" id="exampleInputEmail1" ng-model="config.secondaryEcallBcallSmsNumber" ng-pattern="/^[+]?[0-9]+$/" aria-describedby="emailHelp" placeholder="+49...">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">E-Call ASI Threshold</label>
+                            <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="0.2">
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="messages" role="tabpanel">
+                        <div class="form-group">
+                            <label for="disabledSelect">Download Assisted GPS Data</label>
+                            <select id="disabledSelect" class="form-control" ng-model="config.agpsConfig" convert-to-number>
+                                <option value="1">Always</option>
+                                <option value="0">Never</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane" id="settings" role="tabpanel">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" ng-model="config.enableInactivityDetection">
+                                Enable Inactivity Sleep Function
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Inactivity Max g</label>
+                            <input type="number" class="form-control" id="exampleInputEmail1" ng-model="config.inactivityDetectionThreshold" aria-describedby="emailHelp" placeholder="0.02">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Inactivity Timeout (Seconds)</label>
+                            <input type="number" class="form-control" id="exampleInputEmail1" ng-model="config.inactivitySleepTimeoutSec" aria-describedby="emailHelp" placeholder="60 Seconds">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" ng-click="putConfig()" title="Will be pushed to device on next device startup">Save </button>
+
+                </div>
+
+
+
+            </form>
+        </div>
+
+    </div>
+</div>
