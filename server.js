@@ -9,8 +9,21 @@ var express = require('express');        // call express
 var app = express();
 var bodyParser = require('body-parser');
 
-var builder = ProtoBuf.loadProtoFile("tixs.proto");
-var tixsMessages = builder.build();
+var configMessage = null;
+var startupMessage = null;
+var softwareUpdate = null;
+
+
+ProtoBuf.load("tixs.proto", function(err, root) {
+    if(err) {
+        console.log(err);
+    }
+    configMessage = root.lookupType("telematik.Config");
+    startupMessage = root.lookupType("telematik.Startup");
+    softwareUpdate = root.lookupType("telematik.SoftwareUpdate");
+
+});
+
 
 var excel = require('./app/excel.js');
 var config = require('./config.js');
@@ -57,20 +70,17 @@ client.on('connect', function () {
 
 
 function pushSWUpdateNotification(updateURL) {
-    var encodedMessage = tixsMessages.telematik.SoftwareUpdate.encode({"url": updateURL});
-
-    return encodedMessage;
+    return softwareUpdate.encode({"url": updateURL}).finish();
 }
 
 
 function pushConfigUpdateNotification(config) {
     console.log(config);
-    
-
-    return tixsMessages.telematik.Config.encode(config);
-
-
+    return configMessage.encode(config).finish();
 }
+
+
+
 
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -79,8 +89,7 @@ function isNumeric(n) {
 client.on('message', function (topic, message) {
     // message is Buffer
     // Subscribed only to "t/start" now
-    msg = tixsMessages.telematik.Startup.decode(message);
-
+    msg = startupMessage.decode(message);
 
     if (msg !== null)
     {
@@ -93,10 +102,10 @@ client.on('message', function (topic, message) {
 
                 // Update device status in local DB first
                 Device.update(
-                        {imei: msg.getImei()},
+                        {imei: msg.imei},
                         {
-                            $setOnInsert: {imei: msg.getImei()},
-                            $set: {date: Date.now(), longVersion: msg.getLongVersion(), hwVersion: msg.getHwVersion(), reportedConfiguration: msg.getConfigVersion()}
+                            $setOnInsert: {imei: msg.imei},
+                            $set: {date: Date.now(), longVersion: msg.longVersion, hwVersion: msg.HwVersion, reportedConfiguration: msg.version}
                         },
                         {upsert: true},
                         function (err, num) {
@@ -107,7 +116,7 @@ client.on('message', function (topic, message) {
             },
             function (callback) {
                 // Find device
-                Device.findOne({imei: msg.getImei()}, function (err, dev) {
+                Device.findOne({imei: msg.imei}, function (err, dev) {
                     if (err) {
                         console.log("err", err);
                         callback(err);
@@ -146,23 +155,22 @@ client.on('message', function (topic, message) {
                 var swConfigInstalled = deviceInDB.reportedConfiguration;
                 var swConfigRequired = groupObject.version;
 
-                console.log("Message", msg);
-                console.log(msg.getImei(), "SW Installed", swVersionInstalled, "SW Required", swVersionRequired);
-                console.log(msg.getImei(), "Config installed", swConfigInstalled, "Config required", swConfigRequired);
+                console.log(msg.imei, "SW Installed", swVersionInstalled, "SW Required", swVersionRequired);
+                console.log(msg.imei, "Config installed", swConfigInstalled, "Config required", swConfigRequired);
 
                 if (swVersionRequired !== null && swVersionRequired.length > 0 && swVersionInstalled !== swVersionRequired) {
-                    console.log(msg.getImei(), "SW Installed:", swVersionInstalled, "SW Required:", swVersionRequired);
+                    console.log(msg.imei, "SW Installed:", swVersionInstalled, "SW Required:", swVersionRequired);
 
                     // Push software update request
                     console.log("Push download URL", group.software.url)
 
-                    var swUpdateMessage = pushSWUpdateNotification(msg.getImei(), group.software.url);
+                    var swUpdateMessage = pushSWUpdateNotification(msg.imei, group.software.url);
 
                     client.publish('mqtt/test', swUpdateMessage.buffer, function () {
                         console.log('Software update request sent');
                     });
                 } else if (swConfigRequired === null) {
-                    console.log(msg.getImei(), "Device needs software update, remote update not enabled for this application.");
+                    console.log(msg.imei, "Device needs software update, remote update not enabled for this application.");
                 } else if (isNumeric(swConfigInstalled)) {
                     // Does require config?
                     if (swConfigInstalled !== swConfigRequired) {
@@ -172,16 +180,20 @@ client.on('message', function (topic, message) {
                         //group.config['configVersion'] = swConfigRequired;
                         var groupObject = group.toObject({getters:false});
                        
-                        var imei = msg.getImei();
+                        var imei = msg.imei;
                         configUpdate.configVersion = swConfigRequired;
                         console.log(configUpdate);
                         console.log("configVersion in JSON", configUpdate.configVersion);
 
                         
                         var configUpdateMsg = pushConfigUpdateNotification(configUpdate);
-                        client.publish('c/'+imei+'/config', configUpdateMsg.buffer, function () {
-                            console.log('Config update request sent');
-                        });
+                        if(imei==="861359030249799") {
+                            console.log("Hex", configUpdateMsg.toString('hex'));
+
+                           client.publish('c/'+imei+'/config', configUpdateMsg, function () {
+                                console.log('Config update request sent');
+                            });
+                        }
 
 
                     }
@@ -197,7 +209,6 @@ client.on('message', function (topic, message) {
 
         });
 
-//    console.log(msg.getImei());
     }
 });
 
